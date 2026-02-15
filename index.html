@@ -4,35 +4,20 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Anthony & Sofia — Wedding Invitation</title>
-  <meta name="description" content="Anthony & Sofia — Wedding Invitation" />
 
-  <!-- Clean elegant fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      /* White, clean, subtle */
-      --paper:#f7f6f4;
-      --paper2:#ffffff;
       --ink:#141214;
-      --muted:#6f6a70;
-      --line:rgba(20,18,20,.10);
-
-      /* Luxury card glass */
-      --glass:rgba(255,255,255,.60);
-      --glass2:rgba(255,255,255,.44);
-
-      /* Soft shadows (uniform + smooth) */
-      --shadow1: 0 18px 55px rgba(0,0,0,.10);
-      --shadow2: 0 10px 30px rgba(0,0,0,.08);
-      --radius: 22px;
-
-      /* Accents */
+      --muted:rgba(20,18,20,.62);
+      --shadow: 0 26px 70px rgba(0,0,0,.20);
+      --shadowSoft: 0 16px 46px rgba(0,0,0,.16);
+      --radius: 26px;
+      --ease: cubic-bezier(.2,.9,.2,1);
       --olive:#5e6d56;
-      --gold1:#f3ead7;   /* wax pearl */
-      --gold2:#d4c09a;
     }
 
     *{box-sizing:border-box}
@@ -40,533 +25,342 @@
     body{
       margin:0;
       color:var(--ink);
-      background:
-        radial-gradient(1200px 900px at 50% -10%, rgba(255,255,255,.98), rgba(255,255,255,.30) 55%, transparent 75%),
-        linear-gradient(180deg, var(--paper), var(--paper2));
+      background:#fff;
       font-family:"Cormorant Garamond", ui-serif, Georgia, serif;
       overflow-x:hidden;
     }
 
-    /* super subtle paper grain */
-    body:before{
-      content:"";
-      position:fixed; inset:0;
-      pointer-events:none;
-      opacity:.14;
-      mix-blend-mode:multiply;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
-    }
-
-    a{color:inherit}
-    .wrap{max-width:980px;margin:0 auto;padding:26px 18px 90px}
-    .center{text-align:center}
-
-    /* smooth reveal */
-    .reveal{opacity:0; transform: translateY(14px); transition: .85s cubic-bezier(.2,.85,.2,1)}
-    .reveal.show{opacity:1; transform:none}
-
-    /* ---------------- INTRO OVERLAY ---------------- */
-    .intro{
-      position:fixed; inset:0;
-      display:grid; place-items:center;
-      padding:18px;
-      z-index:50;
+    /* ------------ Scene container ------------ */
+    .scene{
+      position:fixed;
+      inset:0;
+      display:grid;
+      place-items:center;
+      padding:16px;
       background:
-        radial-gradient(1200px 900px at 50% -10%, rgba(255,255,255,.98), rgba(255,255,255,.32) 55%, transparent 75%),
-        linear-gradient(180deg, var(--paper), var(--paper2));
-      transition: opacity .55s ease, transform .55s ease;
+        radial-gradient(1000px 800px at 50% -10%, rgba(255,255,255,.95), rgba(255,255,255,.20) 60%, transparent 80%),
+        linear-gradient(180deg, #fbfaf8, #ffffff);
+      transition: opacity .7s var(--ease), transform .7s var(--ease);
+      z-index:50;
     }
-    .intro.hidden{opacity:0; transform: translateY(-10px); pointer-events:none;}
-
-    .intro .subtitle{
-      margin-top:18px;
-      color:var(--muted);
-      font-size:15px;
-      letter-spacing:.02em;
-    }
-    .intro .hint{
-      margin-top:12px;
-      color:var(--muted);
-      font-size:12px;
-      letter-spacing:.22em;
-      text-transform:uppercase;
-    }
-    .intro .divider{
-      width:140px;height:1px;margin:12px auto 0;
-      background:linear-gradient(90deg, transparent, rgba(20,18,20,.16), transparent);
+    .scene.hidden{
+      opacity:0;
+      transform: translateY(-10px);
+      pointer-events:none;
     }
 
-    /* ---------------- 3D ENVELOPE ---------------- */
-    .stage{
-      width:min(430px, 92vw);
-      aspect-ratio: 4/3.2;
+    /* “card” that holds the image */
+    .hero{
+      width:min(520px, 96vw);
+      border-radius: var(--radius);
       position:relative;
-      user-select:none;
+      filter: drop-shadow(var(--shadow));
+      transform: translateZ(0);
+      transition: transform .55s var(--ease), filter .55s var(--ease), opacity .55s var(--ease);
+      opacity:1;
+    }
+
+    .hero img{
+      width:100%;
+      height:auto;
+      display:block;
+      border-radius: var(--radius);
+      border:1px solid rgba(20,18,20,.10);
+      background:#fff;
+    }
+
+    /* clickable overlay */
+    .tapBtn{
+      all:unset;
       cursor:pointer;
-      outline:none;
-      filter: drop-shadow(var(--shadow1));
+      display:block;
+      width:100%;
+    }
+    .hero:active{ transform: scale(.992); }
+
+    /* bottom hint like reference */
+    .hint{
+      margin-top:18px;
+      text-align:center;
+      color:var(--muted);
+    }
+    .hint .script{
+      font-family:"Great Vibes", cursive;
+      font-size: clamp(26px, 4.6vw, 40px);
+      line-height:1.1;
+      text-shadow: 0 1px 0 rgba(255,255,255,.6);
+    }
+    .hint .caps{
+      margin-top:10px;
+      font-size:12px;
+      letter-spacing:.26em;
+      text-transform:uppercase;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+    }
+    .line{
+      width:76px;
+      height:1px;
+      background: linear-gradient(90deg, transparent, rgba(20,18,20,.18), transparent);
+    }
+
+    /* ------------ Smooth open transition (Scene 1 -> Scene 2) ------------ */
+    .scene2 .hero{
+      opacity:0;
+      transform: translateY(10px) scale(.985);
+      filter: drop-shadow(var(--shadowSoft));
+    }
+    .scene2.show .hero{
+      opacity:1;
+      transform: translateY(0) scale(1);
+      filter: drop-shadow(var(--shadow));
+    }
+
+    /* ------------ Main content with frame background ------------ */
+    main{
+      min-height:100vh;
+      display:block;
+      background:#fff;
+    }
+
+    .details{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:22px 16px 60px;
+      background:
+        radial-gradient(1200px 900px at 50% -10%, rgba(255,255,255,.92), rgba(255,255,255,.26) 60%, transparent 80%),
+        linear-gradient(180deg, #fbfaf8, #ffffff);
+    }
+
+    .frameWrap{
+      width:min(980px, 96vw);
+      position:relative;
+      border-radius: 18px;
+      overflow:hidden;
+      filter: drop-shadow(0 22px 60px rgba(0,0,0,.18));
       transform: translateZ(0);
     }
 
-    .env{
-      position:absolute; inset:0;
-      border-radius: 28px;
-      background: linear-gradient(180deg, #ffffff, #f2f0ee);
-      border:1px solid rgba(20,18,20,.08);
-      overflow:hidden;
-    }
-
-    /* soft ambient shading */
-    .env:before{
-      content:"";
-      position:absolute; inset:-40px;
-      background:
-        radial-gradient(360px 240px at 50% 20%, rgba(255,255,255,.95), transparent 60%),
-        radial-gradient(480px 260px at 50% 60%, rgba(0,0,0,.06), transparent 62%);
-      opacity:.9;
-      pointer-events:none;
-    }
-
-    /* inner pocket + folds */
-    .bottom{
-      position:absolute; left:0; right:0; bottom:0;
-      height:62%;
-      background: linear-gradient(180deg, #f7f6f4, #eeece9);
-      clip-path: polygon(0 0, 50% 56%, 100% 0, 100% 100%, 0 100%);
-      border-top:1px solid rgba(20,18,20,.06);
-      opacity:.98;
-    }
-    .sideL,.sideR{
-      position:absolute; top:36%; bottom:0; width:56%;
-      background: linear-gradient(180deg, #f6f5f3, #e9e7e4);
-      opacity:.98;
-    }
-    .sideL{left:0; clip-path: polygon(0 0, 100% 40%, 100% 100%, 0 100%);}
-    .sideR{right:0; clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 100%);}
-
-    /* flap */
-    .flap{
-      position:absolute; left:0; right:0; top:0;
-      height:64%;
-      background: linear-gradient(180deg, #ffffff, #efecea);
-      clip-path: polygon(0 0, 100% 0, 50% 78%);
-      transform-origin: 50% 0%;
-      transform: rotateX(0deg);
-      transition: transform .95s cubic-bezier(.2,.9,.2,1);
-      border-bottom:1px solid rgba(20,18,20,.06);
-      z-index:7;
-    }
-
-    /* letter */
-    .letter{
-      position:absolute;
-      left:9%; right:9%;
-      bottom:10%;
-      height:72%;
-      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.66));
-      border:1px solid rgba(20,18,20,.10);
-      border-radius: 18px;
-      box-shadow: 0 14px 40px rgba(0,0,0,.08);
-      backdrop-filter: blur(10px);
-      transform: translateY(28%);
-      transition: transform .95s cubic-bezier(.2,.9,.2,1);
-      padding:18px 16px;
-      display:grid;
-      place-items:center;
-      text-align:center;
-      z-index:4;
-    }
-    .kicker{
-      font-size:11px;
-      letter-spacing:.22em;
-      text-transform:uppercase;
-      color:var(--muted);
-      margin-top:4px;
-    }
-    .names{
-      margin-top:8px;
-      font-family:"Cormorant Garamond", serif;
-      font-weight:500;
-      font-size:30px;
-      letter-spacing:.01em;
-    }
-    .date{
-      margin-top:10px;
-      font-size:14px;
-      color:var(--muted);
-      letter-spacing:.04em;
-    }
-
-    /* Wax seal (pearl/ivory, smooth) */
-    .seal{
-      position:absolute;
-      left:50%; top:53%;
-      width:92px; height:92px;
-      transform: translate(-50%,-32%);
-      border-radius: 50%;
-      background:
-        radial-gradient(circle at 30% 30%, var(--gold1), var(--gold2) 70%),
-        radial-gradient(circle at 70% 75%, rgba(255,255,255,.35), transparent 55%);
-      border:1px solid rgba(20,18,20,.16);
-      box-shadow: 0 18px 46px rgba(0,0,0,.14);
-      display:grid; place-items:center;
-      z-index:10;
-      transition: transform .35s cubic-bezier(.2,.9,.2,1);
-    }
-    .seal span{
-      font-family:"Cormorant Garamond", serif;
-      font-weight:600;
-      letter-spacing:.14em;
-      font-size:16px;
-      transform: translateY(1px);
-    }
-    .stage:active .seal{transform: translate(-50%,-32%) scale(.985);}
-
-    /* OPEN STATE */
-    .stage.open .flap{transform: rotateX(160deg);}
-    .stage.open .letter{transform: translateY(-14%);}
-    .stage.open .seal{transform: translate(-50%,-32%) scale(.96);}
-
-    /* ---------------- MAIN UI ---------------- */
-    .pill{
-      display:inline-flex; align-items:center; gap:10px;
-      padding:10px 14px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      background:rgba(255,255,255,.55);
-      backdrop-filter: blur(12px);
-      font-size:12px;
-      letter-spacing:.22em;
-      text-transform:uppercase;
-      color:var(--muted);
-    }
-
-    header.hero{padding-top:14px}
-    h1{
-      margin:16px 0 8px;
-      font-weight:500;
-      font-size: clamp(40px, 7vw, 64px);
-      line-height:1.02;
-      letter-spacing:.01em;
-    }
-    .script{
-      font-family:"Great Vibes", cursive;
-      font-size: clamp(44px, 7vw, 76px);
-      line-height:1;
-      display:block;
-      margin-top:10px;
-    }
-    .sub{
-      margin:0;
-      font-size:16px;
-      color:var(--muted);
-      letter-spacing:.04em;
-    }
-
-    .card{
-      margin:18px auto 0;
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--glass);
-      backdrop-filter: blur(14px);
-      box-shadow: var(--shadow2);
-      padding:18px;
-    }
-    .section-title{
-      font-size:12px;
-      letter-spacing:.22em;
-      text-transform:uppercase;
-      color:var(--muted);
-      margin:0 0 12px;
-    }
-
-    /* image card like the examples */
-    .photo{
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      overflow:hidden;
-      background: #fff;
-      box-shadow: var(--shadow2);
-    }
-    .photo img{
-      display:block;
+    .frameWrap img{
       width:100%;
       height:auto;
-      transform: scale(1.02);
-      filter: saturate(.98) contrast(.98);
+      display:block;
+      background:#fff;
     }
 
-    .grid{
+    /* text overlay on top of the frame image */
+    .overlay{
+      position:absolute;
+      inset:0;
       display:grid;
-      grid-template-columns:1fr;
-      gap:14px;
-    }
-    @media (min-width: 860px){
-      .grid{grid-template-columns: 1.15fr .85fr;}
+      place-items:center;
+      padding: 12% 10%;
+      text-align:center;
     }
 
-    .detail-row{
+    .kicker{
+      font-size:12px;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+      color:rgba(20,18,20,.62);
+      margin-bottom:8px;
+    }
+
+    h1{
+      margin:0 0 10px;
+      font-weight:500;
+      font-size: clamp(40px, 6.2vw, 68px);
+      line-height:1;
+    }
+    .scriptNames{
+      font-family:"Great Vibes", cursive;
+      font-size: clamp(46px, 7vw, 86px);
+      margin: 6px 0 14px;
+      line-height:1;
+      color: rgba(20,18,20,.92);
+      text-shadow: 0 1px 0 rgba(255,255,255,.65);
+    }
+
+    .info{
+      max-width: 720px;
+      margin: 0 auto;
+      display:grid;
+      gap:10px;
+      color: rgba(20,18,20,.78);
+      font-size: clamp(16px, 2.1vw, 20px);
+    }
+
+    .row{
       display:flex;
       justify-content:space-between;
       gap:14px;
-      padding: 12px 12px;
-      border:1px solid rgba(20,18,20,.10);
+      padding: 12px 14px;
+      border: 1px solid rgba(20,18,20,.10);
       border-radius: 16px;
-      background: var(--glass2);
+      background: rgba(255,255,255,.52);
+      backdrop-filter: blur(10px);
     }
-    .detail-row strong{font-weight:600}
-    .detail-row span{color:var(--muted); text-align:right}
+    .row b{font-weight:600}
+    .row span{color:rgba(20,18,20,.64)}
 
-    .countdown{
-      display:grid;
-      grid-template-columns:repeat(4, 1fr);
+    .actions{
+      margin-top:16px;
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
       gap:10px;
-      margin-top:10px;
     }
-    .timebox{
-      border:1px solid rgba(20,18,20,.10);
-      border-radius: 18px;
-      background: var(--glass2);
-      padding: 12px 10px;
-      text-align:center;
-    }
-    .num{font-size:24px;font-weight:600;letter-spacing:.02em}
-    .lbl{
-      display:block;
-      margin-top:6px;
-      font-size:11px;
-      letter-spacing:.22em;
-      text-transform:uppercase;
-      color:var(--muted);
-    }
-
-    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
     .btn{
       appearance:none;
       border:1px solid rgba(20,18,20,.18);
-      background: rgba(255,255,255,.56);
-      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,.60);
       padding: 10px 14px;
       border-radius: 999px;
       cursor:pointer;
       text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
+      color: rgba(20,18,20,.86);
       font-size: 14px;
-      transition: transform .25s cubic-bezier(.2,.9,.2,1), background .25s ease, border-color .25s ease;
+      transition: transform .25s var(--ease), background .25s ease;
+      backdrop-filter: blur(10px);
     }
     .btn:hover{transform: translateY(-1px);}
     .btn.primary{
-      background: rgba(94,109,86,.14);
       border-color: rgba(94,109,86,.28);
+      background: rgba(94,109,86,.14);
+      color: rgba(20,18,20,.90);
     }
-
-    form{display:grid; gap:10px; margin-top:8px}
-    input, select, textarea{
-      width:100%;
-      padding: 12px 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(20,18,20,.14);
-      background: rgba(255,255,255,.70);
-      font: inherit;
-      color:var(--ink);
-      outline:none;
-    }
-    textarea{min-height:92px; resize:vertical}
-    .tiny{font-size:12px; color:var(--muted); line-height:1.45}
 
     footer{
-      margin-top:28px;
-      text-align:center;
-      color:var(--muted);
+      margin-top:18px;
+      color:rgba(20,18,20,.55);
       font-size:13px;
+      letter-spacing:.06em;
+    }
+
+    /* reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      .scene, .hero, .scene2 .hero, .scene2.show .hero, .btn{ transition:none !important; }
+      html{ scroll-behavior:auto; }
     }
   </style>
 </head>
 
 <body>
-  <!-- INTRO -->
-  <section class="intro" id="intro" aria-label="Invitation intro">
-    <div class="center">
-      <div class="stage" id="stage" role="button" tabindex="0" aria-label="Open invitation">
-        <div class="env">
-          <div class="flap"></div>
-          <div class="sideL"></div>
-          <div class="sideR"></div>
-          <div class="bottom"></div>
-
-          <div class="letter" aria-hidden="true">
-            <div class="kicker">Wedding Invitation</div>
-            <div class="names">Anthony & Sofia</div>
-            <div class="date">27 February • 2:00 PM</div>
-          </div>
-
-          <div class="seal" aria-hidden="true"><span>A&nbsp;&nbsp;S</span></div>
-        </div>
+  <!-- SCENE 1: Closed envelope (click to open) -->
+  <section class="scene scene1" id="scene1" aria-label="Closed envelope">
+    <div>
+      <div class="hero">
+        <button class="tapBtn" id="openEnvelope" aria-label="Open invitation">
+          <img src="envelope-closed.png" alt="Closed envelope with monogram" />
+        </button>
       </div>
 
-      <div class="subtitle">This invitation is exclusively for you</div>
-      <div class="divider"></div>
-      <div class="hint">Tap to open</div>
+      <div class="hint" aria-hidden="true">
+        <div class="script">This invitation is exclusively for you</div>
+        <div class="caps">
+          <span class="line"></span>
+          <span>TAP TO OPEN</span>
+          <span class="line"></span>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- MAIN -->
-  <main class="wrap" id="main">
-    <header class="hero center reveal">
-      <div class="pill">Old Town Hall of Glyfada • 2:00 PM</div>
-      <h1>We are getting married <span class="script">Anthony & Sofia</span></h1>
-      <p class="sub">27 February</p>
-    </header>
-
-    <!-- clean image card (replace src with your own photo if you want) -->
-    <section class="photo reveal" style="margin-top:16px;">
-      <img alt="Location preview"
-           src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&w=1800&q=70">
-    </section>
-
-    <section class="card reveal">
-      <p class="section-title">Counting down to forever</p>
-      <div class="countdown" aria-label="Countdown">
-        <div class="timebox"><div class="num" id="cdDays">—</div><span class="lbl">Days</span></div>
-        <div class="timebox"><div class="num" id="cdHours">—</div><span class="lbl">Hours</span></div>
-        <div class="timebox"><div class="num" id="cdMins">—</div><span class="lbl">Minutes</span></div>
-        <div class="timebox"><div class="num" id="cdSecs">—</div><span class="lbl">Seconds</span></div>
+  <!-- SCENE 2: Open envelope (brief cinematic reveal) -->
+  <section class="scene scene2 hidden" id="scene2" aria-label="Open envelope">
+    <div>
+      <div class="hero">
+        <img src="envelope-open.png" alt="Open envelope" />
       </div>
-      <p class="tiny" id="cdNote" style="margin:10px 0 0;"></p>
+
+      <div class="hint" aria-hidden="true" style="margin-top:16px;">
+        <div class="caps">
+          <span class="line"></span>
+          <span>WELCOME</span>
+          <span class="line"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN DETAILS (Scene 3 background frame) -->
+  <main>
+    <section class="details" id="details">
+      <div class="frameWrap">
+        <img src="frame.png" alt="Invitation frame background" />
+
+        <div class="overlay">
+          <div>
+            <div class="kicker">Wedding Invitation</div>
+            <div class="scriptNames">Anthony &amp; Sofia</div>
+
+            <div class="info" role="group" aria-label="Wedding information">
+              <div class="row"><b>Date</b><span>27 February</span></div>
+              <div class="row"><b>Time</b><span>14:00 (2:00 PM)</span></div>
+              <div class="row"><b>Ceremony</b><span>Old Town Hall of Glyfada</span></div>
+              <div class="row"><b>Lunch after</b><span>Ark Glyfada</span></div>
+            </div>
+
+            <div class="actions">
+              <a class="btn primary" target="_blank" rel="noopener"
+                 href="https://www.google.com/maps/search/?api=1&query=Old%20Town%20Hall%20of%20Glyfada">Ceremony Map</a>
+              <a class="btn" target="_blank" rel="noopener"
+                 href="https://www.google.com/maps/search/?api=1&query=Ark%20Glyfada">Lunch Map</a>
+            </div>
+
+            <footer>With love • <span style="color:var(--olive);font-weight:600;">Anthony &amp; Sofia</span></footer>
+          </div>
+        </div>
+      </div>
     </section>
-
-    <section class="grid" style="margin-top:18px;">
-      <section class="card reveal">
-        <p class="section-title">Wedding details</p>
-
-        <div class="detail-row">
-          <strong>Ceremony</strong>
-          <span>Old Town Hall of Glyfada</span>
-        </div>
-
-        <div class="detail-row" style="margin-top:10px;">
-          <strong>Time</strong>
-          <span>14:00 (2:00 PM)</span>
-        </div>
-
-        <div class="detail-row" style="margin-top:10px;">
-          <strong>Reception</strong>
-          <span>Lunch to follow at Ark Glyfada</span>
-        </div>
-
-        <div class="actions">
-          <a class="btn primary" target="_blank" rel="noopener"
-             href="https://www.google.com/maps/search/?api=1&query=Old%20Town%20Hall%20of%20Glyfada">
-            Ceremony Map
-          </a>
-          <a class="btn" target="_blank" rel="noopener"
-             href="https://www.google.com/maps/search/?api=1&query=Ark%20Glyfada">
-            Reception Map
-          </a>
-        </div>
-
-        <p class="tiny" style="margin-top:10px;">
-          Replace the image above with your own venue photo for a more personal look.
-        </p>
-      </section>
-
-      <section class="card reveal">
-        <p class="section-title">RSVP</p>
-
-        <form id="rsvpForm">
-          <input name="name" placeholder="Full Name" required />
-          <select name="guests" required>
-            <option value="" disabled selected>Number of Guests</option>
-            <option>1</option><option>2</option><option>3</option><option>4</option>
-          </select>
-          <input name="diet" placeholder="Dietary notes (optional)" />
-          <textarea name="message" placeholder="Message to the couple (optional)"></textarea>
-          <button class="btn primary" type="submit">Confirm Attendance</button>
-          <div class="tiny" id="rsvpStatus"></div>
-        </form>
-
-        <p class="tiny" style="margin-top:10px;">
-          This currently saves locally in the browser. If you want real RSVPs (Google Sheet), tell me and I’ll connect it.
-        </p>
-      </section>
-    </section>
-
-    <footer class="reveal">
-      With love, <span style="color:var(--olive); font-weight:600;">Anthony & Sofia</span> • 27.02
-    </footer>
   </main>
 
   <script>
-    // Open envelope
-    const intro = document.getElementById('intro');
-    const stage = document.getElementById('stage');
-
-    function openInvite(){
-      stage.classList.add('open');
-      setTimeout(()=> {
-        intro.classList.add('hidden');
-        document.getElementById('main').scrollIntoView({behavior:'smooth', block:'start'});
-      }, 900);
-    }
-    stage.addEventListener('click', openInvite);
-    stage.addEventListener('keydown', (e)=> {
-      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openInvite(); }
+    // Preload images for smooth transitions
+    const preload = (src) => new Promise((res, rej) => {
+      const i = new Image();
+      i.onload = () => res();
+      i.onerror = rej;
+      i.src = src;
     });
 
-    // Countdown (viewer local timezone)
-    const target = new Date(new Date().getFullYear(), 1, 27, 14, 0, 0); // Feb=1
-    if(Date.now() > target.getTime()) target.setFullYear(target.getFullYear()+1);
+    const scene1 = document.getElementById('scene1');
+    const scene2 = document.getElementById('scene2');
+    const details = document.getElementById('details');
+    const openBtn = document.getElementById('openEnvelope');
 
-    const cdDays  = document.getElementById('cdDays');
-    const cdHours = document.getElementById('cdHours');
-    const cdMins  = document.getElementById('cdMins');
-    const cdSecs  = document.getElementById('cdSecs');
-    const cdNote  = document.getElementById('cdNote');
-    const pad = (n)=> String(n).padStart(2,'0');
+    async function openSequence(){
+      openBtn.disabled = true;
 
-    function tick(){
-      const now = new Date();
-      let diff = target.getTime() - now.getTime();
-      if(diff <= 0){
-        cdDays.textContent="0"; cdHours.textContent="00"; cdMins.textContent="00"; cdSecs.textContent="00";
-        cdNote.textContent="Today is the day ✨";
-        return;
+      // ensure open + frame are loaded before we animate
+      try{
+        await Promise.all([
+          preload('envelope-open.png'),
+          preload('frame.png')
+        ]);
+      }catch(e){
+        // if preload fails, still continue (best effort)
       }
-      const d = Math.floor(diff / (1000*60*60*24)); diff -= d*(1000*60*60*24);
-      const h = Math.floor(diff / (1000*60*60));    diff -= h*(1000*60*60);
-      const m = Math.floor(diff / (1000*60));       diff -= m*(1000*60);
-      const s = Math.floor(diff / 1000);
 
-      cdDays.textContent = d;
-      cdHours.textContent = pad(h);
-      cdMins.textContent = pad(m);
-      cdSecs.textContent = pad(s);
+      // Scene1 -> Scene2
+      scene2.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        scene2.classList.add('show');
+        scene1.classList.add('hidden');
+      });
 
-      cdNote.textContent = `Target: ${target.toLocaleString(undefined,{dateStyle:'long', timeStyle:'short'})}`;
+      // Hold Scene2 briefly, then scroll to details
+      setTimeout(() => {
+        scene2.classList.add('hidden');
+        // smooth scroll to details
+        details.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 1300); // feel free to tweak (1000-1600)
     }
-    tick(); setInterval(tick, 1000);
 
-    // RSVP local demo
-    const form = document.getElementById('rsvpForm');
-    const statusEl = document.getElementById('rsvpStatus');
-    form.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(form).entries());
-      const list = JSON.parse(localStorage.getItem('rsvps') || '[]');
-      list.push({...data, ts:new Date().toISOString()});
-      localStorage.setItem('rsvps', JSON.stringify(list));
-      statusEl.textContent = "Saved. Thank you! (local demo)";
-      form.reset();
-    });
-
-    // Reveal on scroll
-    const reveals = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); });
-    }, {threshold:.12});
-    reveals.forEach(el=>io.observe(el));
+    openBtn.addEventListener('click', openSequence);
   </script>
 </body>
 </html>
