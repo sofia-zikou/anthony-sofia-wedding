@@ -6,23 +6,33 @@
   <title>Anthony & Sofia — Wedding Invitation</title>
   <meta name="description" content="Anthony & Sofia — Wedding Invitation" />
 
-  <!-- Elegant fonts (free) -->
+  <!-- Clean elegant fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg0:#f7e7ea;      /* soft blush */
-      --bg1:#f2d2d8;      /* dusty blush */
-      --ink:#1f171a;      /* warm black */
-      --muted:#6b5b61;
-      --line:rgba(31,23,26,.14);
-      --glass:rgba(255,255,255,.55);
-      --glass2:rgba(255,255,255,.40);
-      --shadow: 0 20px 60px rgba(0,0,0,.10);
+      /* White, clean, subtle */
+      --paper:#f7f6f4;
+      --paper2:#ffffff;
+      --ink:#141214;
+      --muted:#6f6a70;
+      --line:rgba(20,18,20,.10);
+
+      /* Luxury card glass */
+      --glass:rgba(255,255,255,.60);
+      --glass2:rgba(255,255,255,.44);
+
+      /* Soft shadows (uniform + smooth) */
+      --shadow1: 0 18px 55px rgba(0,0,0,.10);
+      --shadow2: 0 10px 30px rgba(0,0,0,.08);
       --radius: 22px;
-      --accent:#6a7a60;   /* olive */
+
+      /* Accents */
+      --olive:#5e6d56;
+      --gold1:#f3ead7;   /* wax pearl */
+      --gold2:#d4c09a;
     }
 
     *{box-sizing:border-box}
@@ -31,207 +41,217 @@
       margin:0;
       color:var(--ink);
       background:
-        radial-gradient(1000px 700px at 50% -10%, rgba(255,255,255,.75), transparent 55%),
-        linear-gradient(180deg, var(--bg1), var(--bg0));
-      font-family: "Cormorant Garamond", ui-serif, Georgia, serif;
+        radial-gradient(1200px 900px at 50% -10%, rgba(255,255,255,.98), rgba(255,255,255,.30) 55%, transparent 75%),
+        linear-gradient(180deg, var(--paper), var(--paper2));
+      font-family:"Cormorant Garamond", ui-serif, Georgia, serif;
       overflow-x:hidden;
     }
 
-    /* subtle paper texture (lighter than before) */
+    /* super subtle paper grain */
     body:before{
       content:"";
       position:fixed; inset:0;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E");
-      mix-blend-mode:soft-light;
-      opacity:.28;
       pointer-events:none;
+      opacity:.14;
+      mix-blend-mode:multiply;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
     }
 
     a{color:inherit}
-    .wrap{max-width:980px;margin:0 auto;padding:28px 18px 80px}
+    .wrap{max-width:980px;margin:0 auto;padding:26px 18px 90px}
     .center{text-align:center}
-    .reveal{opacity:0; transform: translateY(12px); transition: .75s ease}
+
+    /* smooth reveal */
+    .reveal{opacity:0; transform: translateY(14px); transition: .85s cubic-bezier(.2,.85,.2,1)}
     .reveal.show{opacity:1; transform:none}
 
-    /* ---------- Intro overlay ---------- */
+    /* ---------------- INTRO OVERLAY ---------------- */
     .intro{
       position:fixed; inset:0;
       display:grid; place-items:center;
       padding:18px;
       z-index:50;
       background:
-        radial-gradient(1000px 700px at 50% -10%, rgba(255,255,255,.78), transparent 55%),
-        linear-gradient(180deg, var(--bg1), var(--bg0));
+        radial-gradient(1200px 900px at 50% -10%, rgba(255,255,255,.98), rgba(255,255,255,.32) 55%, transparent 75%),
+        linear-gradient(180deg, var(--paper), var(--paper2));
       transition: opacity .55s ease, transform .55s ease;
     }
     .intro.hidden{opacity:0; transform: translateY(-10px); pointer-events:none;}
 
-    .intro .hint{
-      margin-top:14px;
-      font-size:13px;
-      letter-spacing:.18em;
-      text-transform:uppercase;
+    .intro .subtitle{
+      margin-top:18px;
       color:var(--muted);
+      font-size:15px;
+      letter-spacing:.02em;
     }
-    .intro .line{
-      width:120px; height:1px; margin:12px auto 0;
-      background:linear-gradient(90deg, transparent, rgba(31,23,26,.22), transparent);
+    .intro .hint{
+      margin-top:12px;
+      color:var(--muted);
+      font-size:12px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+    }
+    .intro .divider{
+      width:140px;height:1px;margin:12px auto 0;
+      background:linear-gradient(90deg, transparent, rgba(20,18,20,.16), transparent);
     }
 
-    /* ---------- Premium envelope ---------- */
+    /* ---------------- 3D ENVELOPE ---------------- */
     .stage{
       width:min(430px, 92vw);
-      aspect-ratio: 4/3.15;
+      aspect-ratio: 4/3.2;
       position:relative;
       user-select:none;
       cursor:pointer;
-      filter: drop-shadow(var(--shadow));
       outline:none;
+      filter: drop-shadow(var(--shadow1));
+      transform: translateZ(0);
     }
+
     .env{
       position:absolute; inset:0;
       border-radius: 28px;
-      background: linear-gradient(180deg, #f9ecef, #efc5cd);
-      border:1px solid rgba(31,23,26,.10);
+      background: linear-gradient(180deg, #ffffff, #f2f0ee);
+      border:1px solid rgba(20,18,20,.08);
       overflow:hidden;
     }
-    /* inner shading */
-    .env:after{
+
+    /* soft ambient shading */
+    .env:before{
       content:"";
       position:absolute; inset:-40px;
-      background: radial-gradient(380px 220px at 50% 35%, rgba(255,255,255,.55), transparent 60%);
-      transform: rotate(-4deg);
+      background:
+        radial-gradient(360px 240px at 50% 20%, rgba(255,255,255,.95), transparent 60%),
+        radial-gradient(480px 260px at 50% 60%, rgba(0,0,0,.06), transparent 62%);
       opacity:.9;
       pointer-events:none;
     }
 
+    /* inner pocket + folds */
+    .bottom{
+      position:absolute; left:0; right:0; bottom:0;
+      height:62%;
+      background: linear-gradient(180deg, #f7f6f4, #eeece9);
+      clip-path: polygon(0 0, 50% 56%, 100% 0, 100% 100%, 0 100%);
+      border-top:1px solid rgba(20,18,20,.06);
+      opacity:.98;
+    }
+    .sideL,.sideR{
+      position:absolute; top:36%; bottom:0; width:56%;
+      background: linear-gradient(180deg, #f6f5f3, #e9e7e4);
+      opacity:.98;
+    }
+    .sideL{left:0; clip-path: polygon(0 0, 100% 40%, 100% 100%, 0 100%);}
+    .sideR{right:0; clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 100%);}
+
+    /* flap */
     .flap{
       position:absolute; left:0; right:0; top:0;
       height:64%;
-      background: linear-gradient(180deg, #fff6f7, #f0c8d0);
+      background: linear-gradient(180deg, #ffffff, #efecea);
       clip-path: polygon(0 0, 100% 0, 50% 78%);
       transform-origin: 50% 0%;
       transform: rotateX(0deg);
-      transition: transform .95s cubic-bezier(.2,.85,.2,1);
-      border-bottom:1px solid rgba(31,23,26,.08);
-      z-index:6;
+      transition: transform .95s cubic-bezier(.2,.9,.2,1);
+      border-bottom:1px solid rgba(20,18,20,.06);
+      z-index:7;
     }
 
-    .sideL,.sideR,.bottom{
-      position:absolute; inset:auto;
-      z-index:4;
-    }
-    .bottom{
-      left:0; right:0; bottom:0; height:62%;
-      background: linear-gradient(180deg, #f2cbd3, #ebb8c3);
-      clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
-      opacity:.95;
-    }
-    .sideL{
-      left:0; bottom:0; top:36%; width:56%;
-      background: linear-gradient(180deg, #f1c5ce, #e7aebb);
-      clip-path: polygon(0 0, 100% 40%, 100% 100%, 0 100%);
-      opacity:.92;
-    }
-    .sideR{
-      right:0; bottom:0; top:36%; width:56%;
-      background: linear-gradient(180deg, #f1c5ce, #e7aebb);
-      clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 100%);
-      opacity:.92;
-    }
-
+    /* letter */
     .letter{
       position:absolute;
       left:9%; right:9%;
       bottom:10%;
       height:72%;
-      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.58));
-      border:1px solid rgba(31,23,26,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.66));
+      border:1px solid rgba(20,18,20,.10);
       border-radius: 18px;
-      transform: translateY(26%);
-      transition: transform .95s cubic-bezier(.2,.85,.2,1);
+      box-shadow: 0 14px 40px rgba(0,0,0,.08);
+      backdrop-filter: blur(10px);
+      transform: translateY(28%);
+      transition: transform .95s cubic-bezier(.2,.9,.2,1);
       padding:18px 16px;
       display:grid;
       place-items:center;
       text-align:center;
-      z-index:3;
-      backdrop-filter: blur(10px);
+      z-index:4;
     }
-    .letter .kicker{
-      font-size:12px;
+    .kicker{
+      font-size:11px;
       letter-spacing:.22em;
       text-transform:uppercase;
       color:var(--muted);
+      margin-top:4px;
     }
-    .letter .names{
-      font-family:"Great Vibes", cursive;
-      font-size:34px;
-      line-height:1;
-      margin-top:6px;
-    }
-    .letter .meta{
+    .names{
       margin-top:8px;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:500;
+      font-size:30px;
+      letter-spacing:.01em;
+    }
+    .date{
+      margin-top:10px;
       font-size:14px;
       color:var(--muted);
       letter-spacing:.04em;
     }
 
+    /* Wax seal (pearl/ivory, smooth) */
     .seal{
       position:absolute;
-      left:50%; top:52%;
+      left:50%; top:53%;
       width:92px; height:92px;
-      transform: translate(-50%,-30%);
+      transform: translate(-50%,-32%);
       border-radius: 50%;
       background:
-        radial-gradient(circle at 30% 30%, #f6d9b0, #c98e3f 72%),
-        radial-gradient(circle at 70% 70%, rgba(255,255,255,.35), transparent 55%);
-      border:1px solid rgba(31,23,26,.20);
-      box-shadow: 0 16px 46px rgba(0,0,0,.14);
+        radial-gradient(circle at 30% 30%, var(--gold1), var(--gold2) 70%),
+        radial-gradient(circle at 70% 75%, rgba(255,255,255,.35), transparent 55%);
+      border:1px solid rgba(20,18,20,.16);
+      box-shadow: 0 18px 46px rgba(0,0,0,.14);
       display:grid; place-items:center;
       z-index:10;
+      transition: transform .35s cubic-bezier(.2,.9,.2,1);
     }
     .seal span{
       font-family:"Cormorant Garamond", serif;
       font-weight:600;
-      letter-spacing:.12em;
-      font-size:18px;
+      letter-spacing:.14em;
+      font-size:16px;
       transform: translateY(1px);
     }
+    .stage:active .seal{transform: translate(-50%,-32%) scale(.985);}
 
+    /* OPEN STATE */
     .stage.open .flap{transform: rotateX(160deg);}
     .stage.open .letter{transform: translateY(-14%);}
+    .stage.open .seal{transform: translate(-50%,-32%) scale(.96);}
 
-    .intro-text{
-      margin-top:16px;
-      font-size:16px;
-      color:var(--muted);
-      letter-spacing:.02em;
-    }
-
-    /* ---------- Main content ---------- */
-    header.hero{padding-top:18px}
+    /* ---------------- MAIN UI ---------------- */
     .pill{
       display:inline-flex; align-items:center; gap:10px;
       padding:10px 14px;
       border:1px solid var(--line);
       border-radius:999px;
-      background:rgba(255,255,255,.40);
-      backdrop-filter: blur(10px);
-      font-size:13px;
-      letter-spacing:.18em;
+      background:rgba(255,255,255,.55);
+      backdrop-filter: blur(12px);
+      font-size:12px;
+      letter-spacing:.22em;
       text-transform:uppercase;
       color:var(--muted);
     }
+
+    header.hero{padding-top:14px}
     h1{
-      margin:18px 0 8px;
+      margin:16px 0 8px;
       font-weight:500;
-      letter-spacing:.01em;
       font-size: clamp(40px, 7vw, 64px);
       line-height:1.02;
+      letter-spacing:.01em;
     }
     .script{
       font-family:"Great Vibes", cursive;
-      font-size: clamp(42px, 7vw, 72px);
+      font-size: clamp(44px, 7vw, 76px);
       line-height:1;
       display:block;
       margin-top:10px;
@@ -248,9 +268,9 @@
       border:1px solid var(--line);
       border-radius: var(--radius);
       background: var(--glass);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 12px 40px rgba(0,0,0,.06);
-      padding: 18px;
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow2);
+      padding:18px;
     }
     .section-title{
       font-size:12px;
@@ -260,32 +280,20 @@
       margin:0 0 12px;
     }
 
-    .hero-img{
-      margin-top:14px;
+    /* image card like the examples */
+    .photo{
       border:1px solid var(--line);
       border-radius: var(--radius);
       overflow:hidden;
-      background:
-        radial-gradient(700px 340px at 60% 20%, rgba(255,255,255,.55), transparent 65%),
-        linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,.10));
-      position:relative;
-      min-height: 220px;
+      background: #fff;
+      box-shadow: var(--shadow2);
     }
-    .hero-img:before{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        url("https://images.unsplash.com/photo-1520857014576-2c4f4c972b57?auto=format&fit=crop&w=1600&q=70")
-        center/cover no-repeat;
-      filter: saturate(.95) contrast(.98);
-      opacity:.86;
-      transform: scale(1.04);
-    }
-    .hero-img:after{
-      content:"";
-      position:absolute; inset:0;
-      background: linear-gradient(180deg, rgba(242,210,216,.10), rgba(242,210,216,.55));
-      mix-blend-mode: multiply;
+    .photo img{
+      display:block;
+      width:100%;
+      height:auto;
+      transform: scale(1.02);
+      filter: saturate(.98) contrast(.98);
     }
 
     .grid{
@@ -302,7 +310,7 @@
       justify-content:space-between;
       gap:14px;
       padding: 12px 12px;
-      border:1px solid rgba(31,23,26,.10);
+      border:1px solid rgba(20,18,20,.10);
       border-radius: 16px;
       background: var(--glass2);
     }
@@ -316,17 +324,13 @@
       margin-top:10px;
     }
     .timebox{
-      border:1px solid rgba(31,23,26,.10);
+      border:1px solid rgba(20,18,20,.10);
       border-radius: 18px;
       background: var(--glass2);
       padding: 12px 10px;
       text-align:center;
     }
-    .num{
-      font-size:24px;
-      font-weight:600;
-      letter-spacing:.02em;
-    }
+    .num{font-size:24px;font-weight:600;letter-spacing:.02em}
     .lbl{
       display:block;
       margin-top:6px;
@@ -336,17 +340,12 @@
       color:var(--muted);
     }
 
-    .actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:12px;
-    }
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
     .btn{
       appearance:none;
-      border:1px solid rgba(31,23,26,.18);
-      background: rgba(255,255,255,.45);
-      backdrop-filter: blur(10px);
+      border:1px solid rgba(20,18,20,.18);
+      background: rgba(255,255,255,.56);
+      backdrop-filter: blur(12px);
       padding: 10px 14px;
       border-radius: 999px;
       cursor:pointer;
@@ -355,10 +354,12 @@
       align-items:center;
       gap:10px;
       font-size: 14px;
+      transition: transform .25s cubic-bezier(.2,.9,.2,1), background .25s ease, border-color .25s ease;
     }
+    .btn:hover{transform: translateY(-1px);}
     .btn.primary{
-      background: rgba(106,122,96,.18);
-      border-color: rgba(106,122,96,.35);
+      background: rgba(94,109,86,.14);
+      border-color: rgba(94,109,86,.28);
     }
 
     form{display:grid; gap:10px; margin-top:8px}
@@ -366,8 +367,8 @@
       width:100%;
       padding: 12px 12px;
       border-radius: 16px;
-      border: 1px solid rgba(31,23,26,.14);
-      background: rgba(255,255,255,.62);
+      border: 1px solid rgba(20,18,20,.14);
+      background: rgba(255,255,255,.70);
       font: inherit;
       color:var(--ink);
       outline:none;
@@ -398,15 +399,15 @@
           <div class="letter" aria-hidden="true">
             <div class="kicker">Wedding Invitation</div>
             <div class="names">Anthony & Sofia</div>
-            <div class="meta">27 February • 2:00 PM</div>
+            <div class="date">27 February • 2:00 PM</div>
           </div>
 
           <div class="seal" aria-hidden="true"><span>A&nbsp;&nbsp;S</span></div>
         </div>
       </div>
 
-      <div class="intro-text">This invitation is exclusively for you</div>
-      <div class="line"></div>
+      <div class="subtitle">This invitation is exclusively for you</div>
+      <div class="divider"></div>
       <div class="hint">Tap to open</div>
     </div>
   </section>
@@ -417,9 +418,13 @@
       <div class="pill">Old Town Hall of Glyfada • 2:00 PM</div>
       <h1>We are getting married <span class="script">Anthony & Sofia</span></h1>
       <p class="sub">27 February</p>
-
-      <div class="hero-img" aria-hidden="true"></div>
     </header>
+
+    <!-- clean image card (replace src with your own photo if you want) -->
+    <section class="photo reveal" style="margin-top:16px;">
+      <img alt="Location preview"
+           src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&w=1800&q=70">
+    </section>
 
     <section class="card reveal">
       <p class="section-title">Counting down to forever</p>
@@ -463,7 +468,7 @@
         </div>
 
         <p class="tiny" style="margin-top:10px;">
-          You can replace these map links with your exact Google Maps links anytime.
+          Replace the image above with your own venue photo for a more personal look.
         </p>
       </section>
 
@@ -483,18 +488,18 @@
         </form>
 
         <p class="tiny" style="margin-top:10px;">
-          This demo stores RSVPs locally in the browser. If you want real RSVPs (Google Sheet), I’ll connect it.
+          This currently saves locally in the browser. If you want real RSVPs (Google Sheet), tell me and I’ll connect it.
         </p>
       </section>
     </section>
 
     <footer class="reveal">
-      With love, <span style="color:var(--accent); font-weight:600;">Anthony & Sofia</span> • 27.02
+      With love, <span style="color:var(--olive); font-weight:600;">Anthony & Sofia</span> • 27.02
     </footer>
   </main>
 
   <script>
-    // Intro open
+    // Open envelope
     const intro = document.getElementById('intro');
     const stage = document.getElementById('stage');
 
@@ -503,7 +508,7 @@
       setTimeout(()=> {
         intro.classList.add('hidden');
         document.getElementById('main').scrollIntoView({behavior:'smooth', block:'start'});
-      }, 880);
+      }, 900);
     }
     stage.addEventListener('click', openInvite);
     stage.addEventListener('keydown', (e)=> {
@@ -519,15 +524,14 @@
     const cdMins  = document.getElementById('cdMins');
     const cdSecs  = document.getElementById('cdSecs');
     const cdNote  = document.getElementById('cdNote');
-
     const pad = (n)=> String(n).padStart(2,'0');
 
     function tick(){
       const now = new Date();
       let diff = target.getTime() - now.getTime();
       if(diff <= 0){
-        cdDays.textContent = "0"; cdHours.textContent="00"; cdMins.textContent="00"; cdSecs.textContent="00";
-        cdNote.textContent = "Today is the day ✨";
+        cdDays.textContent="0"; cdHours.textContent="00"; cdMins.textContent="00"; cdSecs.textContent="00";
+        cdNote.textContent="Today is the day ✨";
         return;
       }
       const d = Math.floor(diff / (1000*60*60*24)); diff -= d*(1000*60*60*24);
@@ -542,10 +546,9 @@
 
       cdNote.textContent = `Target: ${target.toLocaleString(undefined,{dateStyle:'long', timeStyle:'short'})}`;
     }
-    tick();
-    setInterval(tick, 1000);
+    tick(); setInterval(tick, 1000);
 
-    // RSVP demo local
+    // RSVP local demo
     const form = document.getElementById('rsvpForm');
     const statusEl = document.getElementById('rsvpStatus');
     form.addEventListener('submit', (e)=>{
