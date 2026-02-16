@@ -49,15 +49,24 @@
       pointer-events:none;
     }
 
-    /* “card” that holds the image */
+    /* “card” that holds the image (BIGGER + RESPONSIVE) */
     .hero{
-      width:min(520px, 96vw);
+      /* cinematic on desktop, responsive on mobile */
+      width: min(820px, 94vw);
+      /* just in case on ultrawide monitors */
+      max-width: 920px;
+
       border-radius: var(--radius);
       position:relative;
+
       filter: drop-shadow(var(--shadow));
       transform: translateZ(0);
-      transition: transform .55s var(--ease), filter .55s var(--ease), opacity .55s var(--ease);
       opacity:1;
+
+      transition:
+        transform .55s var(--ease),
+        filter .55s var(--ease),
+        opacity .55s var(--ease);
     }
 
     .hero img{
@@ -67,6 +76,12 @@
       border-radius: var(--radius);
       border:1px solid rgba(20,18,20,.10);
       background:#fff;
+
+      /* keep it crisp */
+      image-rendering:auto;
+      -webkit-backface-visibility:hidden;
+      backface-visibility:hidden;
+      transform: translateZ(0);
     }
 
     /* clickable overlay */
@@ -76,7 +91,16 @@
       display:block;
       width:100%;
     }
+
+    /* subtle press */
     .hero:active{ transform: scale(.992); }
+
+    /* hover scale (only devices that support hover) */
+    @media (hover: hover) and (pointer: fine){
+      .hero:hover{
+        transform: scale(1.02);
+      }
+    }
 
     /* bottom hint like reference */
     .hint{
@@ -86,7 +110,7 @@
     }
     .hint .script{
       font-family:"Great Vibes", cursive;
-      font-size: clamp(26px, 4.6vw, 40px);
+      font-size: clamp(28px, 3.6vw, 44px);
       line-height:1.1;
       text-shadow: 0 1px 0 rgba(255,255,255,.6);
     }
@@ -136,7 +160,7 @@
     }
 
     .frameWrap{
-      width:min(980px, 96vw);
+      width:min(1050px, 96vw);
       position:relative;
       border-radius: 18px;
       overflow:hidden;
@@ -169,15 +193,9 @@
       margin-bottom:8px;
     }
 
-    h1{
-      margin:0 0 10px;
-      font-weight:500;
-      font-size: clamp(40px, 6.2vw, 68px);
-      line-height:1;
-    }
     .scriptNames{
       font-family:"Great Vibes", cursive;
-      font-size: clamp(46px, 7vw, 86px);
+      font-size: clamp(52px, 6.8vw, 92px);
       margin: 6px 0 14px;
       line-height:1;
       color: rgba(20,18,20,.92);
@@ -320,10 +338,10 @@
 
   <script>
     // Preload images for smooth transitions
-    const preload = (src) => new Promise((res, rej) => {
+    const preload = (src) => new Promise((res) => {
       const i = new Image();
       i.onload = () => res();
-      i.onerror = rej;
+      i.onerror = () => res(); // best effort
       i.src = src;
     });
 
@@ -335,15 +353,10 @@
     async function openSequence(){
       openBtn.disabled = true;
 
-      // ensure open + frame are loaded before we animate
-      try{
-        await Promise.all([
-          preload('envelope-open.png'),
-          preload('frame.png')
-        ]);
-      }catch(e){
-        // if preload fails, still continue (best effort)
-      }
+      await Promise.all([
+        preload('envelope-open.png'),
+        preload('frame.png')
+      ]);
 
       // Scene1 -> Scene2
       scene2.classList.remove('hidden');
@@ -355,9 +368,8 @@
       // Hold Scene2 briefly, then scroll to details
       setTimeout(() => {
         scene2.classList.add('hidden');
-        // smooth scroll to details
         details.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 1300); // feel free to tweak (1000-1600)
+      }, 1300);
     }
 
     openBtn.addEventListener('click', openSequence);
