@@ -5,11 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Anthony & Sofia — Wedding Invitation</title>
 
-  <!-- Preload images to avoid first-load lag -->
-  <link rel="preload" as="image" href="envelope-closed.png">
-  <link rel="preload" as="image" href="envelope-open.png">
-  <link rel="preload" as="image" href="frame.png">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
@@ -35,60 +30,6 @@
       overflow-x:hidden;
     }
 
-    /* ------------ Loading overlay (prevents "blank" while images load) ------------ */
-    .loader{
-      position:fixed; inset:0;
-      display:grid; place-items:center;
-      background:
-        radial-gradient(1000px 800px at 50% -10%, rgba(255,255,255,.96), rgba(255,255,255,.25) 60%, transparent 82%),
-        linear-gradient(180deg, #fbfaf8, #ffffff);
-      z-index:999;
-      transition: opacity .55s var(--ease), transform .55s var(--ease);
-    }
-    .loader.hidden{
-      opacity:0;
-      transform: translateY(-10px);
-      pointer-events:none;
-    }
-    .loaderCard{
-      width:min(520px, 92vw);
-      border-radius: 22px;
-      border:1px solid rgba(20,18,20,.10);
-      background: rgba(255,255,255,.60);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 22px 60px rgba(0,0,0,.14);
-      padding:18px 16px;
-      text-align:center;
-    }
-    .loaderTitle{
-      font-family:"Great Vibes", cursive;
-      font-size:42px;
-      color:rgba(20,18,20,.80);
-      margin: 2px 0 6px;
-    }
-    .loaderSub{
-      color:rgba(20,18,20,.55);
-      font-size:12px;
-      letter-spacing:.22em;
-      text-transform:uppercase;
-      margin:0;
-    }
-    .dots{
-      display:flex; justify-content:center; gap:8px;
-      margin-top:14px;
-    }
-    .dot{
-      width:8px;height:8px;border-radius:50%;
-      background:rgba(20,18,20,.22);
-      animation: pulse 1.1s infinite ease-in-out;
-    }
-    .dot:nth-child(2){animation-delay:.15s}
-    .dot:nth-child(3){animation-delay:.30s}
-    @keyframes pulse{
-      0%,100%{transform:scale(.9); opacity:.35}
-      50%{transform:scale(1.2); opacity:.9}
-    }
-
     /* ------------ Scene container ------------ */
     .scene{
       position:fixed;
@@ -99,9 +40,8 @@
       background:
         radial-gradient(1000px 800px at 50% -10%, rgba(255,255,255,.95), rgba(255,255,255,.20) 60%, transparent 80%),
         linear-gradient(180deg, #fbfaf8, #ffffff);
-      transition: opacity .8s var(--ease), transform .8s var(--ease);
+      transition: opacity .7s var(--ease), transform .7s var(--ease);
       z-index:50;
-      opacity:1;
     }
     .scene.hidden{
       opacity:0;
@@ -109,17 +49,24 @@
       pointer-events:none;
     }
 
-    /* Larger + responsive */
+    /* “card” that holds the image (BIGGER + RESPONSIVE) */
     .hero{
+      /* cinematic on desktop, responsive on mobile */
       width: min(820px, 94vw);
+      /* just in case on ultrawide monitors */
       max-width: 920px;
+
       border-radius: var(--radius);
       position:relative;
+
       filter: drop-shadow(var(--shadow));
       transform: translateZ(0);
       opacity:1;
-      transition: transform .65s var(--ease), filter .65s var(--ease), opacity .65s var(--ease);
-      will-change: transform, opacity, filter;
+
+      transition:
+        transform .55s var(--ease),
+        filter .55s var(--ease),
+        opacity .55s var(--ease);
     }
 
     .hero img{
@@ -129,46 +76,33 @@
       border-radius: var(--radius);
       border:1px solid rgba(20,18,20,.10);
       background:#fff;
+
+      /* keep it crisp */
+      image-rendering:auto;
       -webkit-backface-visibility:hidden;
       backface-visibility:hidden;
       transform: translateZ(0);
     }
 
+    /* clickable overlay */
     .tapBtn{
       all:unset;
       cursor:pointer;
       display:block;
       width:100%;
     }
+
+    /* subtle press */
     .hero:active{ transform: scale(.992); }
 
-    /* Animation on Scene 1 (premium, subtle) */
-    .scene1 .hero{
-      animation: floaty 3.6s ease-in-out infinite;
-    }
-    @keyframes floaty{
-      0%,100%{transform: translateY(0) scale(1);}
-      50%{transform: translateY(-6px) scale(1.006);}
-    }
-    /* shimmer light sweep (very soft) */
-    .scene1 .hero::after{
-      content:"";
-      position:absolute; inset:-20%;
-      background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.32) 50%, transparent 65%);
-      transform: translateX(-40%);
-      animation: sweep 3.8s var(--ease) infinite;
-      pointer-events:none;
-      border-radius: var(--radius);
-      mix-blend-mode: screen;
-      opacity:.55;
-    }
-    @keyframes sweep{
-      0%{transform: translateX(-55%);}
-      55%{transform: translateX(55%);}
-      100%{transform: translateX(55%);}
+    /* hover scale (only devices that support hover) */
+    @media (hover: hover) and (pointer: fine){
+      .hero:hover{
+        transform: scale(1.02);
+      }
     }
 
-    /* Bottom hint */
+    /* bottom hint like reference */
     .hint{
       margin-top:18px;
       text-align:center;
@@ -196,17 +130,7 @@
       background: linear-gradient(90deg, transparent, rgba(20,18,20,.18), transparent);
     }
 
-    /* Scene 2 cinematic reveal */
-    .scene2{
-      opacity:0;
-      transform: translateY(10px);
-      pointer-events:none;
-    }
-    .scene2.show{
-      opacity:1;
-      transform: translateY(0);
-      pointer-events:auto;
-    }
+    /* ------------ Smooth open transition (Scene 1 -> Scene 2) ------------ */
     .scene2 .hero{
       opacity:0;
       transform: translateY(10px) scale(.985);
@@ -218,8 +142,13 @@
       filter: drop-shadow(var(--shadow));
     }
 
-    /* MAIN DETAILS */
-    main{min-height:100vh; background:#fff;}
+    /* ------------ Main content with frame background ------------ */
+    main{
+      min-height:100vh;
+      display:block;
+      background:#fff;
+    }
+
     .details{
       min-height:100vh;
       display:grid;
@@ -229,6 +158,7 @@
         radial-gradient(1200px 900px at 50% -10%, rgba(255,255,255,.92), rgba(255,255,255,.26) 60%, transparent 80%),
         linear-gradient(180deg, #fbfaf8, #ffffff);
     }
+
     .frameWrap{
       width:min(1050px, 96vw);
       position:relative;
@@ -237,13 +167,24 @@
       filter: drop-shadow(0 22px 60px rgba(0,0,0,.18));
       transform: translateZ(0);
     }
-    .frameWrap img{width:100%; height:auto; display:block; background:#fff;}
+
+    .frameWrap img{
+      width:100%;
+      height:auto;
+      display:block;
+      background:#fff;
+    }
+
+    /* text overlay on top of the frame image */
     .overlay{
-      position:absolute; inset:0;
-      display:grid; place-items:center;
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
       padding: 12% 10%;
       text-align:center;
     }
+
     .kicker{
       font-size:12px;
       letter-spacing:.24em;
@@ -251,6 +192,7 @@
       color:rgba(20,18,20,.62);
       margin-bottom:8px;
     }
+
     .scriptNames{
       font-family:"Great Vibes", cursive;
       font-size: clamp(52px, 6.8vw, 92px);
@@ -259,6 +201,7 @@
       color: rgba(20,18,20,.92);
       text-shadow: 0 1px 0 rgba(255,255,255,.65);
     }
+
     .info{
       max-width: 720px;
       margin: 0 auto;
@@ -267,6 +210,7 @@
       color: rgba(20,18,20,.78);
       font-size: clamp(16px, 2.1vw, 20px);
     }
+
     .row{
       display:flex;
       justify-content:space-between;
@@ -279,6 +223,7 @@
     }
     .row b{font-weight:600}
     .row span{color:rgba(20,18,20,.64)}
+
     .actions{
       margin-top:16px;
       display:flex;
@@ -305,6 +250,7 @@
       background: rgba(94,109,86,.14);
       color: rgba(20,18,20,.90);
     }
+
     footer{
       margin-top:18px;
       color:rgba(20,18,20,.55);
@@ -312,39 +258,26 @@
       letter-spacing:.06em;
     }
 
-    /* reduced motion */
+    /* reduce motion */
     @media (prefers-reduced-motion: reduce){
-      .scene, .hero, .scene2, .scene2 .hero, .scene2.show .hero, .btn, .loader{ transition:none !important; }
-      .scene1 .hero{ animation:none !important; }
-      .scene1 .hero::after{ animation:none !important; display:none; }
+      .scene, .hero, .scene2 .hero, .scene2.show .hero, .btn{ transition:none !important; }
       html{ scroll-behavior:auto; }
     }
   </style>
 </head>
 
 <body>
-  <!-- LOADER -->
-  <div class="loader" id="loader" aria-label="Loading invitation">
-    <div class="loaderCard">
-      <div class="loaderTitle">Anthony &amp; Sofia</div>
-      <p class="loaderSub">Loading invitation</p>
-      <div class="dots" aria-hidden="true">
-        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-      </div>
-    </div>
-  </div>
-
   <!-- SCENE 1: Closed envelope (click to open) -->
   <section class="scene scene1" id="scene1" aria-label="Closed envelope">
     <div>
       <div class="hero">
         <button class="tapBtn" id="openEnvelope" aria-label="Open invitation">
-          <img src="envelope-closed.png" alt="Closed envelope with monogram" decoding="async" fetchpriority="high" />
+          <img src="envelope-closed.png" alt="Closed envelope with monogram" />
         </button>
       </div>
 
       <div class="hint" aria-hidden="true">
-        <div class="script">You are invited</div>
+        <div class="script">This invitation is exclusively for you</div>
         <div class="caps">
           <span class="line"></span>
           <span>TAP TO OPEN</span>
@@ -355,10 +288,10 @@
   </section>
 
   <!-- SCENE 2: Open envelope (brief cinematic reveal) -->
-  <section class="scene scene2" id="scene2" aria-label="Open envelope">
+  <section class="scene scene2 hidden" id="scene2" aria-label="Open envelope">
     <div>
       <div class="hero">
-        <img src="envelope-open.png" alt="Open envelope" decoding="async" />
+        <img src="envelope-open.png" alt="Open envelope" />
       </div>
 
       <div class="hint" aria-hidden="true" style="margin-top:16px;">
@@ -375,7 +308,7 @@
   <main>
     <section class="details" id="details">
       <div class="frameWrap">
-        <img src="frame.png" alt="Invitation frame background" decoding="async" />
+        <img src="frame.png" alt="Invitation frame background" />
 
         <div class="overlay">
           <div>
@@ -383,8 +316,8 @@
             <div class="scriptNames">Anthony &amp; Sofia</div>
 
             <div class="info" role="group" aria-label="Wedding information">
-              <div class="row"><b>Date</b><span>27 February 2026</span></div>
-              <div class="row"><b>Time</b><span>2 PM</span></div>
+              <div class="row"><b>Date</b><span>27 February</span></div>
+              <div class="row"><b>Time</b><span>14:00 (2:00 PM)</span></div>
               <div class="row"><b>Ceremony</b><span>Old Town Hall of Glyfada</span></div>
               <div class="row"><b>Lunch after</b><span>Ark Glyfada</span></div>
             </div>
@@ -404,48 +337,39 @@
   </main>
 
   <script>
-    // Preload images properly (including the FIRST image) so nothing "pops" late.
-    const sources = ['envelope-closed.png', 'envelope-open.png', 'frame.png'];
+    // Preload images for smooth transitions
+    const preload = (src) => new Promise((res) => {
+      const i = new Image();
+      i.onload = () => res();
+      i.onerror = () => res(); // best effort
+      i.src = src;
+    });
 
-    function preloadImage(src){
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => resolve(true);
-        img.onerror = () => resolve(false);
-        img.src = src;
-
-        // decode helps reduce jank when painting the image
-        if (img.decode) {
-          img.decode().then(() => resolve(true)).catch(() => resolve(true));
-        }
-      });
-    }
-
-    const loader = document.getElementById('loader');
     const scene1 = document.getElementById('scene1');
     const scene2 = document.getElementById('scene2');
     const details = document.getElementById('details');
     const openBtn = document.getElementById('openEnvelope');
 
-    // Wait until all images are ready, then reveal scene1 (smooth)
-    (async function init(){
-      await Promise.all(sources.map(preloadImage));
-      // small delay makes it feel premium (no flash)
-      setTimeout(() => loader.classList.add('hidden'), 150);
-    })();
-
-    function openSequence(){
+    async function openSequence(){
       openBtn.disabled = true;
 
-      // Scene 1 -> Scene 2 (crossfade)
-      scene2.classList.add('show');
-      scene1.classList.add('hidden');
+      await Promise.all([
+        preload('envelope-open.png'),
+        preload('frame.png')
+      ]);
 
-      // Hold Scene 2, then scroll to details
+      // Scene1 -> Scene2
+      scene2.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        scene2.classList.add('show');
+        scene1.classList.add('hidden');
+      });
+
+      // Hold Scene2 briefly, then scroll to details
       setTimeout(() => {
         scene2.classList.add('hidden');
         details.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 1400);
+      }, 1300);
     }
 
     openBtn.addEventListener('click', openSequence);
